@@ -1,0 +1,29 @@
+User Form
+= form_for @form ,:url=>{:action=>"create"} do |f|
+  - Answer.all.each do |e|
+    - if  e.field_name != "text_field"
+      - xxx = Answer.find_all_by_id(e.id)
+      - yyy=xxx[0].answer_name.split(',')
+    = label :display_name, Question.find_by_id(e.questions_id).question_name if  e.field_name == "text_field"
+    = text_field_tag Question.find_by_id(e.questions_id).id if  e.field_name == "text_field"
+    %br/
+    = label :display_name, Question.find_by_id(e.questions_id).question_name if e.field_name == "select"
+    = select_tag Question.find_by_id(e.questions_id).id,options_for_select(yyy.map{|p| [p,p]}) if  e.field_name == "select"
+    %br/
+    = label :display_name, Question.find_by_id(e.questions_id).question_name if  e.field_name == "radio_button_tag"
+    - if e.field_name == "radio_button_tag"
+      - yyy.each do |d|
+        = radio_button_tag Question.find_by_id(e.questions_id).id,d,false if  e.field_name == "radio_button_tag"
+        = label :field_name, d if  e.field_name == "radio_button_tag"
+    %br/
+    = label :display_name, Question.find_by_id(e.questions_id).question_name if  e.field_name == "check_box_tag"
+    - if e.field_name == "check_box_tag"
+      - yyy.each do |d|
+        = check_box_tag Question.find_by_id(e.questions_id).id.to_s+"[]" , d ,false if  e.field_name == "check_box_tag"
+        = label :display_name, d if  e.field_name == "check_box_tag"
+  %br/
+  = submit_tag "Submit Answer"
+%br/
+%br/
+%br/
+%span{:style => "background-color:white;color:red;"}= link_to "Back" ,"/user/forms"

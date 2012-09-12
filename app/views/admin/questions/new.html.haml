@@ -1,0 +1,6 @@
+= form_for @question ,:url=>{:action=>"create"} do |f|
+  Question:#{f.text_field :question_name}
+  %br/
+  FieldName:#{f.select :field_name , options_for_select([["Textfield","text_field"],["CheckBox","check_box_tag"],["RadioButton","radio_button_tag"],["SelectList","select"]])}
+  %br/
+  = f.submit "Submit Question"

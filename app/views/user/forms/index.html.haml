@@ -1,0 +1,22 @@
+%center
+  %h3 User Details
+  %table{:cellspacing => "30", :style => "margin-top:20px;border:1px solid blue"}
+    - x= [nil]
+    - y=Array.new
+    - @forms.each do |e|
+      - y << e.display_name
+      - x= x|y
+    %tr
+      - x.each do |d|
+        - if d==nil
+          %th Operations
+        - else
+          %th= d
+    - for form in @forms
+      - if @z==form.display_name
+        %tr
+          %td= link_to "Edit" , :action=>"edit" ,:id=>form.id
+          %td= form.display_data
+      - else
+        %td= form.display_data
+  %span{:style => "background-color:white;color:blue;margin-left:50px"}= link_to "User New Form" , new_user_form_path

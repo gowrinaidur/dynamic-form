@@ -1,0 +1,29 @@
+= form_for @form, :url=>{:action=>"update"} do |f|
+  - @form_edit = Form.find_all_by_forms_id(@form.forms_id)
+  - @form_edit.each do |e|
+    - field_name = Question.find_by_id(e.questions_id).field_name
+    - if  field_name != "text_field"
+      - xxx = Answer.find_all_by_id(e.answers_id)
+      - yyy=xxx[0].answer_name.split(',')
+      - zzz=e.display_data.split(',')
+    = label :display_name, e.display_name if  field_name == "text_field"
+    = text_field_tag e.id ,e.display_data if  field_name == "text_field"
+    %br/
+    = label :display_name, e.display_name if field_name == "select"
+    = select_tag e.id,options_for_select(yyy.map{|p| [p,p]},e.display_data ) if field_name == "select"
+    %br/
+    = label :display_name, e.display_name if  field_name == "radio_button_tag"
+    - if field_name == "radio_button_tag"
+      - yyy.each do |d|
+        = radio_button_tag(e.id, d, d.eql?(e.display_data) )
+        = label :field_name, d if  field_name == "radio_button_tag"
+    %br/
+    = label :display_name, e.display_name if field_name == "check_box_tag"
+    - if field_name == "check_box_tag"
+      - yyy.each do |d|
+        - sh=zzz.map{|t| d.to_s==t.to_s }
+        = check_box_tag e.id.to_s+"[]" , d ,sh.include?(true) if field_name == "check_box_tag"
+        = label :display_name, d if  field_name == "check_box_tag"
+  %br/
+  = submit_tag "Submit Answer"
+%span{:style => "background-color:white;color:red;"}= link_to "Back" ,"/user/forms"
